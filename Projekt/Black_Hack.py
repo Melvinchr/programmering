@@ -154,6 +154,11 @@ while True:
             print_hands()
             print("It's a tie.")
             print("\n")
+        # spar pengarna på fil
+        file = open('Projekt/black_hack_bank.txt', 'w')
+        file.write(str(player_money))
+        print(f"You have ${player_money} initially.")
+        file.close()
 
         play_again = input("Do you want to play again? (yes/no): ").lower()
         print("\n")
