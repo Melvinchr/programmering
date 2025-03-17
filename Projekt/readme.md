@@ -2,3 +2,5 @@ Black jack med en twist, jag ska skapa ett black jack där man kan köpa till bo
 
 # Vecka 11: 
 Fixat en readme och satt upp den på github. Fortsatt koda på mitt blackjack spel, jag har nu fått banken att fungera så pengarna man vinner under spelets gång är kvar efter att man stängt ner spelet.
+# Vecka 12:
+Börjat fixa med effekt korten, och ge de en funktion
