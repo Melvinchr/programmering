@@ -53,7 +53,6 @@ def calculate_score(hand):
 def shop(player_money):
     print("Shop Menu:")
     print("1. Double Down ($10)")
-    print("2. Insurance ($5)")
     
     choice = input("Choose an item to buy (or 'exit' to leave): ")
     
@@ -61,12 +60,6 @@ def shop(player_money):
         if player_money >= 10:
             player_money -= 10
             print("You bought Double Down!")
-        else:
-            print("Not enough money.")
-    elif choice == "2":
-        if player_money >= 5:
-            player_money -= 5
-            print("You bought Insurance!")
         else:
             print("Not enough money.")
     elif choice.lower() == "exit":
@@ -82,6 +75,8 @@ player_money = int(line)
 print(f"You have ${player_money} initially.")
 file.close()
 
+def Double_Down(player_money, bet):
+    print("You used Double Down")
 
 while True:
     player_money = shop(player_money)
@@ -154,7 +149,7 @@ while True:
             print_hands()
             print("It's a tie.")
             print("\n")
-        # spar pengarna på fil
+        # sparar pengarna på fil
         file = open('Projekt/black_hack_bank.txt', 'w')
         file.write(str(player_money))
         print(f"You have ${player_money} initially.")
