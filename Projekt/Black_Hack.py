@@ -17,6 +17,7 @@
 ##  Implementera fler regler
 
 ## Text fil som sparar pengar och tilläggskort, Ace blir 1 om 11 tar en över 21
+## gruppera funktioner och variabler för sig själva.
 
 
 import random
@@ -78,9 +79,21 @@ file.close()
 def Double_Down(player_money, bet):
     print("You used Double Down")
 
+
 while True:
     player_money = shop(player_money)
     print(f"You have ${player_money} left after shopping.")
+
+    while True:
+        try:
+            bet = int(input(f"How much do you want to bet? (You have ${player_money}): "))
+            if bet <= 0 or bet > player_money:
+                print("Invalid bet amount. Please try again.")
+            else:
+                player_money -= bet
+                break
+        except ValueError:
+            print("Please enter a valid number.")
 
     random.shuffle(deck) 
     player_card = [deck.pop(), deck.pop()] 
@@ -135,12 +148,12 @@ while True:
             print_hands()
             print("Player wins (Dealer Loss Because Dealer Score is exceeding 21)")
             print("\n")
-            player_money += 10
+            player_money += bet * 2
         elif player_score > dealer_score: 
             print_hands()
             print("Player wins (Player Has a Higher Score than Dealer)")
             print("\n")
-            player_money += 10
+            player_money += bet * 2
         elif dealer_score > player_score: 
             print_hands()
             print("Dealer wins (Dealer Has a Higher Score than Player)")
