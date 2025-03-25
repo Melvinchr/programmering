@@ -1,5 +1,9 @@
 Black jack med en twist, jag ska skapa ett black jack där man kan köpa till bonusar och andra saker till sitt spel med pengar man vunnit.
 
+# Vecka 13:
+Fixat ett effekt kort som dubblar dina pengar vid vinnst, fixat så man får tillbaka sina pengar om det blir en tie och lagt alla funktioner överst i koden.
+Skapat en lista där köpta effekt läggs in.
+
 # Vecka 12:
 Börjat fixa med effekt korten, och ge de en funktion, fixat så man istället bettar pengar och får dubbla summan när man vinner
 

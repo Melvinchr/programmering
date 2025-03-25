@@ -22,20 +22,26 @@
 
 import random
 
+card_categories = ['Hearts', 'Diamonds', 'Clubs', 'Spades'] 
+cards_list = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'] 
+deck = [(card, category) for category in card_categories for card in cards_list] 
+
+effect_cards = []
+
+def Double_Down(player_money, bet):
+    print("You used Double Down")
+    player_money -= bet
+    return player_money, bet * 2
+
 def print_hands():
     print("Cards Dealer Has:", dealer_card) 
     print("Score Of The Dealer:", dealer_score) 
     print("Cards Player Has:", player_card) 
     print("Score Of The Player:", player_score) 
 
-card_categories = ['Hearts', 'Diamonds', 'Clubs', 'Spades'] 
-cards_list = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'] 
-deck = [(card, category) for category in card_categories for card in cards_list] 
-
 def calculate_score(hand):
     score = 0
     aces = 0
-    
     for card in hand:
         if card[0] in ['Jack', 'Queen', 'King']: 
             score += 10
@@ -60,6 +66,7 @@ def shop(player_money):
     if choice == "1":
         if player_money >= 10:
             player_money -= 10
+            effect_cards.append("Double_Down") 
             print("You bought Double Down!")
         else:
             print("Not enough money.")
@@ -75,10 +82,6 @@ line = file.readline()
 player_money = int(line)
 print(f"You have ${player_money} initially.")
 file.close()
-
-def Double_Down(player_money, bet):
-    print("You used Double Down")
-
 
 while True:
     player_money = shop(player_money)
@@ -124,12 +127,21 @@ while True:
         print("Score of The Player:", player_score) 
         print("\n") 
     
-        choice = input('What do you want? ["play" to request another card, "stop" to stop]: ').lower() 
+        choice = input('What do you want? ["play" to request another card, "stop" to stop, "double" to double down]: ').lower() 
         if choice == "play": 
             new_card = deck.pop() 
             player_card.append(new_card) 
         elif choice == "stop": 
             is_playing = False
+        elif choice == "double":
+            if len(player_card) == 2 and "Double_Down" in effect_cards:
+                player_money, bet = Double_Down(player_money, bet)
+                new_card = deck.pop()
+                player_card.append(new_card)
+                effect_cards.remove("Double_Down")
+                is_playing = False
+            else:
+                print("You can only double down on your first two cards.")
         else: 
             print("Invalid choice. Please try again.") 
             continue
@@ -161,8 +173,8 @@ while True:
         else: 
             print_hands()
             print("It's a tie.")
+            player_money += bet
             print("\n")
-        # sparar pengarna på fil
         file = open('Projekt/black_hack_bank.txt', 'w')
         file.write(str(player_money))
         print(f"You have ${player_money} initially.")
