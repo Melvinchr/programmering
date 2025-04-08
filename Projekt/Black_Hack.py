@@ -22,9 +22,13 @@
 
 import random
 
-card_categories = ['Hearts', 'Diamonds', 'Clubs', 'Spades'] 
-cards_list = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'] 
-deck = [(card, category) for category in card_categories for card in cards_list] 
+def make_deck():
+    card_categories = ['Hearts', 'Diamonds', 'Clubs', 'Spades'] 
+    cards_list = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'] 
+    deck = [(card, category) for category in card_categories for card in cards_list] 
+    return deck
+
+deck = make_deck()
 
 effect_cards = []
 
@@ -83,10 +87,14 @@ player_money = int(line)
 print(f"You have ${player_money} initially.")
 file.close()
 
+# spelar black jack
 while True:
+    # hämtar pengar från fil
     player_money = shop(player_money)
     print(f"You have ${player_money} left after shopping.")
 
+    # ny runda
+    # välj hur mycket som ska satsas 
     while True:
         try:
             bet = int(input(f"How much do you want to bet? (You have ${player_money}): "))
@@ -98,15 +106,18 @@ while True:
         except ValueError:
             print("Please enter a valid number.")
 
+    # blandar kort och ger ut kort
     random.shuffle(deck) 
     player_card = [deck.pop(), deck.pop()] 
     dealer_card = [deck.pop(), deck.pop()] 
 
+    # räknar ut värdet på korten
     is_playing = True
     while is_playing: 
         player_score = calculate_score(player_card) 
         dealer_score = calculate_score(dealer_card) 
     
+        # om spelarens kort överskrider 21 förlorar man automatiskt
         if player_score > 21:
             print("Cards Player Has:", player_card) 
             print("Score of The Player:", player_score) 
@@ -115,10 +126,7 @@ while True:
             print("Dealer wins (Player Loss Because Player Score is exceeding 21)")
             play_again = input("Do you want to play again? (yes/no): ").lower()
             if "y" in play_again:
-                deck = [(card, category) for category in card_categories for card in cards_list]
-                random.shuffle(deck)
-                player_card = [deck.pop(), deck.pop()]
-                dealer_card = [deck.pop(), deck.pop()]
+                None
             else:
                 is_playing = False
             continue
@@ -183,8 +191,9 @@ while True:
         play_again = input("Do you want to play again? (yes/no): ").lower()
         print("\n")
         if "y" in play_again:
-            deck = [(card, category) for category in card_categories for card in cards_list]
-            random.shuffle(deck)
+            deck = make_deck()
             is_playing = True
         else:
             break
+    else:
+        play_again = False
