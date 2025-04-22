@@ -28,9 +28,7 @@ def make_deck():
     deck = [(card, category) for category in card_categories for card in cards_list] 
     return deck
 
-deck = make_deck()
 
-effect_cards = []
 
 def Double_Down(player_money, bet):
     print("You used Double Down")
@@ -81,6 +79,10 @@ def shop(player_money):
         
     return player_money
 
+deck = make_deck()
+
+effect_cards = []
+
 file = open('Projekt/black_hack_bank.txt', 'r')
 line = file.readline()
 player_money = int(line)
@@ -116,7 +118,7 @@ while True:
     while is_playing: 
         player_score = calculate_score(player_card) 
         dealer_score = calculate_score(dealer_card) 
-    
+
         # om spelarens kort överskrider 21 förlorar man automatiskt
         if player_score > 21:
             print("Cards Player Has:", player_card) 
@@ -124,70 +126,74 @@ while True:
             print("\n")
             print_hands()
             print("Dealer wins (Player Loss Because Player Score is exceeding 21)")
-            play_again = input("Do you want to play again? (yes/no): ").lower()
-            if "y" in play_again:
-                None
-            else:
-                is_playing = False
-            continue
-
-        print("Cards Player Has:", player_card) 
-        print("Score of The Player:", player_score) 
-        print("\n") 
-    
-        choice = input('What do you want? ["play" to request another card, "stop" to stop, "double" to double down]: ').lower() 
-        if choice == "play": 
-            new_card = deck.pop() 
-            player_card.append(new_card) 
-        elif choice == "stop": 
             is_playing = False
-        elif choice == "double":
-            if len(player_card) == 2 and "Double_Down" in effect_cards:
-                player_money, bet = Double_Down(player_money, bet)
-                new_card = deck.pop()
-                player_card.append(new_card)
-                effect_cards.remove("Double_Down")
-                is_playing = False
-            else:
-                print("You can only double down on your first two cards.")
-        else: 
-            print("Invalid choice. Please try again.") 
-            continue
+        else:
+        # Skriver ut korten och värdet på de
+            print("Cards Player Has:", player_card) 
+            print("Score of The Player:", player_score) 
+            print("\n") 
+        
+        #frågar vad du vill göra
+            valid_choice = False
+            while (not valid_choice):
+                choice = input('What do you want? ["play" to request another card, "stop" to stop, "double" to double down]: ').lower() 
+                if choice == "play": 
+                    new_card = deck.pop() 
+                    player_card.append(new_card) 
+                    valid_choice = True
+                elif choice == "stop": 
+                    is_playing = False
+                    valid_choice = True
+                elif choice == "double":
+                    if len(player_card) == 2 and "Double_Down" in effect_cards:
+                        player_money, bet = Double_Down(player_money, bet)
+                        new_card = deck.pop()
+                        player_card.append(new_card)
+                        effect_cards.remove("Double_Down")
+                        play_again = False
+                    else:
+                        print("You can only double down on your first two cards.")
+                    valid_choice = True
+                else: 
+                    print("Invalid choice. Please try again.") 
+                    valid_choice = False
 
+    # kollar player score och dealer score
     if not is_playing:
-        while dealer_score < 17: 
-            new_card = deck.pop() 
-            dealer_card.append(new_card) 
-            dealer_score = calculate_score(dealer_card) 
+        if player_score <= 21:
+            while dealer_score < 17: 
+                new_card = deck.pop() 
+                dealer_card.append(new_card) 
+                dealer_score = calculate_score(dealer_card) 
 
-        print("Cards Dealer Has:", dealer_card)
-        print("Score Of The Dealer:", dealer_score) 
-        print("\n") 
-
-        if dealer_score > 21: 
-            print_hands()
-            print("Player wins (Dealer Loss Because Dealer Score is exceeding 21)")
-            print("\n")
-            player_money += bet * 2
-        elif player_score > dealer_score: 
-            print_hands()
-            print("Player wins (Player Has a Higher Score than Dealer)")
-            print("\n")
-            player_money += bet * 2
-        elif dealer_score > player_score: 
-            print_hands()
-            print("Dealer wins (Dealer Has a Higher Score than Player)")
-            print("\n")
-        else: 
-            print_hands()
-            print("It's a tie.")
-            player_money += bet
-            print("\n")
-        file = open('Projekt/black_hack_bank.txt', 'w')
-        file.write(str(player_money))
-        print(f"You have ${player_money} initially.")
-        file.close()
-
+            print("Cards Dealer Has:", dealer_card)
+            print("Score Of The Dealer:", dealer_score) 
+            print("\n") 
+        # Skriver ut vem som vann och ger pengar om player vann
+            if dealer_score > 21: 
+                print_hands()
+                print("Player wins (Dealer Loss Because Dealer Score is exceeding 21)")
+                print("\n")
+                player_money += bet * 2
+            elif player_score > dealer_score: 
+                print_hands()
+                print("Player wins (Player Has a Higher Score than Dealer)")
+                print("\n")
+                player_money += bet * 2
+            elif dealer_score > player_score: 
+                print_hands()
+                print("Dealer wins (Dealer Has a Higher Score than Player)")
+                print("\n")
+            else: 
+                print_hands()
+                print("It's a tie.")
+                player_money += bet
+                print("\n")
+            file = open('Projekt/black_hack_bank.txt', 'w')
+            file.write(str(player_money))
+            print(f"You have ${player_money} initially.")
+            file.close()
+        # Frågar om du vill spela igen
         play_again = input("Do you want to play again? (yes/no): ").lower()
         print("\n")
         if "y" in play_again:
