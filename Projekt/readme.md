@@ -1,5 +1,8 @@
 Black jack med en twist, jag ska skapa ett black jack där man kan köpa till bonusar och andra saker till sitt spel med pengar man vunnit.
 
+# Vecka 18:
+Fixat ett yttligare effektkort (inte kollat om det fungerar) och fixat problem med det förra effekt kortet.
+
 # Vecka 17:
 Löst strukturen på koden så den är enklare att läsa och förstå, fixat problemet som uppstått när player score gått över 21.
 

@@ -35,6 +35,18 @@ def Double_Down(player_money, bet):
     player_money -= bet
     return player_money, bet * 2
 
+def Plus_Minus(player_score):
+    print("You used Plus & Minus")
+    while True:
+        choice = input("Do you want to add or subtract 5 from your score? (add/subtract):").lower()
+        if choice == "add":
+            player_score += 5
+        elif choice == "subtract":
+            player_score = max(0, player_score - 5) # player_score ska inte gå under 0
+        else:
+            print("Invalid choice. Please type add or subtract.")
+    return player_score   
+
 def print_hands():
     print("Cards Dealer Has:", dealer_card) 
     print("Score Of The Dealer:", dealer_score) 
@@ -62,6 +74,7 @@ def calculate_score(hand):
 def shop(player_money):
     print("Shop Menu:")
     print("1. Double Down ($10)")
+    print("2. Plus & Minus($5)")
     
     choice = input("Choose an item to buy (or 'exit' to leave): ")
     
@@ -70,6 +83,13 @@ def shop(player_money):
             player_money -= 10
             effect_cards.append("Double_Down") 
             print("You bought Double Down!")
+        else:
+            print("Not enough money.")
+    elif choice == "2":
+        if player_money >= 5:
+            player_money -= 5
+            effect_cards.append("Plus_Minus") 
+            print("You bought Plus & Minus!")
         else:
             print("Not enough money.")
     elif choice.lower() == "exit":
@@ -147,13 +167,14 @@ while True:
                 elif choice == "double":
                     if len(player_card) == 2 and "Double_Down" in effect_cards:
                         player_money, bet = Double_Down(player_money, bet)
-                        new_card = deck.pop()
-                        player_card.append(new_card)
                         effect_cards.remove("Double_Down")
-                        play_again = False
+                        is_playing = False
+                        valid_choice = True
                     else:
                         print("You can only double down on your first two cards.")
                     valid_choice = True
+                elif choice == "plus/minus":
+                    player_score = Plus_Minus(player_score)
                 else: 
                     print("Invalid choice. Please try again.") 
                     valid_choice = False
