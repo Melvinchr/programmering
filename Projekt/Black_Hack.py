@@ -22,6 +22,16 @@ def Plus_Minus():
         else:
             print("Invalid choice. Please type add or subtract.")   
 
+def print_command_info():
+    print("\nCOMMANDS:")
+    print("  play        - Take a new card")
+    print("  stop        - Stop playing and let the dealer play")
+    print("  double      - Use Double Down (if you've bought one), doubles your bet if you haven't taken another card. Can't be used if bet is more then half of your total")
+    print("  plus/minus  - Use Plus & Minus (if you've bought one), add or remove 5 from your player score")
+    print("  info        - Show this help text")
+    print()
+
+
 def print_hands():
     print("Cards Dealer Has:", dealer_card) 
     print("Score Of The Dealer:", dealer_score) 
@@ -125,7 +135,7 @@ while True:
         #frågar vad du vill göra
             valid_choice = False
             while (not valid_choice):
-                choice = input('What do you want? ["play" to request another card, "stop" to stop, "double" to double down, "plus/minus" to use the card]: ').lower() 
+                choice = input('What do you want to do? ["play", "stop", "double", "plus/minus", "info"]: ').lower() 
                 if choice == "play": 
                     new_card = deck.pop() 
                     player_card.append(new_card) 
@@ -135,10 +145,14 @@ while True:
                     valid_choice = True
                 elif choice == "double":
                     if len(player_card) == 2 and "Double_Down" in effect_cards:
-                        player_money, bet = Double_Down(player_money, bet)
-                        effect_cards.remove("Double_Down")
-                        is_playing = False
-                        valid_choice = True
+                        if player_money >= bet:
+                            player_money, bet = Double_Down(player_money, bet)
+                            effect_cards.remove("Double_Down")
+                            is_playing = False
+                            valid_choice = True
+                        else:
+                            print("You don't have enough money to double down!")
+                            valid_choice = False
                     else:
                         print("You can only double down on your first two cards and if you have the card.")
                         valid_choice = False
@@ -150,6 +164,9 @@ while True:
                     else:
                         print("You can only use plus/minus if you bought it.")
                         valid_choice = False
+                elif choice == "info":
+                    print_command_info()
+                    valid_choice = False  # Spelaren får välja igen efter info
                 else: 
                     print("Invalid choice. Please try again.") 
                     valid_choice = False
